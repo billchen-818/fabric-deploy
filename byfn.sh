@@ -26,6 +26,8 @@ function networkUp() {
 }
 function networkDown() {
   echo "Stopping the fabric network"
+  docker-compose -f $COMPOSE_FILE down --volumes --remove-orphans
+  rm -rf channel-artifacts/*.block channel-artifacts/*.tx crypto-config connection-org*
 }
 
 function replacePrivateKey() {
