@@ -1,6 +1,7 @@
 #!/bin/bash
 
 export FABRIC_CFG_PATH=${PWD}
+
 function printHelp() {
   echo "Usage: "
   echo "  byfn.sh <mode>"
@@ -10,6 +11,7 @@ function printHelp() {
   echo "	byfn.sh up"
   echo "	byfn.sh down"
 }
+
 function networkUp() {
   if [ ! -d "crypto-config" ]; then
     generateCerts
@@ -24,6 +26,7 @@ function networkUp() {
     exit 1
   fi
 }
+
 function networkDown() {
   echo "Stopping the fabric network"
   docker-compose -f $COMPOSE_FILE down --volumes --remove-orphans
@@ -59,6 +62,7 @@ function replacePrivateKey() {
     rm docker-compose-e2e.yamlt
   fi
 }
+
 function generateCerts() {
   which cryptogen
   if [ "$?" -ne 0 ]; then
@@ -147,12 +151,14 @@ function generateChannelArtifacts() {
   fi
   echo
 }
+
 SYS_CHANNEL="byfn-sys-channel"
 CHANNEL_NAME="mychannel"
 COMPOSE_FILE=docker-compose-cli.yaml
 LANGUAGE=golang
 IMAGETAG="latest"
 MODE=$1
+
 if [ "${MODE}" == "up" ]; then
   networkUp
 elif [ "${MODE}" == "down" ]; then ## Clear the network
