@@ -19,7 +19,7 @@ function networkUp() {
     generateChannelArtifacts
   fi
   COMPOSE_FILES="-f ${COMPOSE_FILE}"
-  IMAGE_TAG=$IMAGETAG docker-compose ${COMPOSE_FILES} up -d 2>&1
+  IMAGE_TAG=$IMAGETAG COMPOSE_PROJECT_NAME=$COMPOSE_PROJECT_NAME docker-compose ${COMPOSE_FILES} up -d 2>&1
   docker ps -a
   if [ $? -ne 0 ]; then
     echo "ERROR !!!! Unable to start network"
@@ -29,7 +29,7 @@ function networkUp() {
 
 function networkDown() {
   echo "Stopping the fabric network"
-  docker-compose -f $COMPOSE_FILE down --volumes --remove-orphans
+  COMPOSE_PROJECT_NAME=$COMPOSE_PROJECT_NAME docker-compose -f $COMPOSE_FILE down --volumes --remove-orphans
   rm -rf channel-artifacts/*.block channel-artifacts/*.tx crypto-config connection-org*
 }
 
@@ -154,6 +154,7 @@ function generateChannelArtifacts() {
 
 SYS_CHANNEL="byfn-sys-channel"
 CHANNEL_NAME="mychannel"
+COMPOSE_PROJECT_NAME="net"
 COMPOSE_FILE=docker-compose-cli.yaml
 LANGUAGE=golang
 IMAGETAG="latest"
